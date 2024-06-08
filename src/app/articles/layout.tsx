@@ -3,7 +3,8 @@ import { Inter } from "next/font/google";
 import "../(index)/globals.css";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import { AuthProvider } from "../context/AuthContext";
+import React from "react";
+import { Providers } from "../components/Providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,15 +18,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  let loggedIn = true;
   return (
-    <html lang="en">
-      <body>
-        <AuthProvider>
-          <Header />
+    <Providers>
+      <html lang="en">
+        <body className={inter.className}>
+          <Header loggedIn={loggedIn} />
           {children}
           <Footer />
-        </AuthProvider>
-      </body>
-    </html>
+        </body>
+      </html>
+    </Providers>
   );
 }

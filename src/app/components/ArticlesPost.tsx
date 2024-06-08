@@ -3,16 +3,16 @@ import Link from "next/link";
 const ArticlesPost = ({ article }: any) => {
   return (
     <div
-      className="flex mb-20 p-6 bg-white rounded-lg shadow-md"
+      className="flex mb-20 p-6 bg-white rounded-lg shadow-md z-[99]"
       key={article.id}
     >
       <Link href={`/article/${article.id}`}>
         <div className="mr-40">
           <div className="flex items-center mb-4">
-            <h3 className="font-bold">User ID: {article.userId}</h3>
+            <h3 className="font-bold text-black">User ID: {article.userId}</h3>
             <span className="ml-1 text-gray-500">Views: {article.views}</span>
           </div>
-          <div className="mb-16">
+          <div className="mb-16 text-black">
             <p className="text-xl font-bold" id="title">
               {article.title}
             </p>

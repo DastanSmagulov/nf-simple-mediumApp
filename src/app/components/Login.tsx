@@ -1,11 +1,13 @@
+// src/components/Login.tsx
 "use client";
 import { useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
-  // const router = useRouter();
-
+  const router = useRouter();
+  const { setToken } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,20 +17,23 @@ const Login = () => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    console.log(username, password);
 
     try {
-      let response = await axios.post("https://dummyjson.com/auth/login", {
+      const response = await axios.post("https://dummyjson.com/auth/login", {
         username: username,
         password: password,
         expiresInMins: 30,
       });
-      // if (response.status == 200) {
-      //   router.push("/articles");
-      // }
-      localStorage.setItem("token", response.data.token);
+
+      if (response.status === 200) {
+        const token = response.data.token;
+        setToken(token);
+        localStorage.setItem("token", token);
+        setLoading(false);
+        router.push("/articles");
+      }
     } catch (err: any) {
-      console.error("Error during login:", err); // Log the error to the console
+      console.error("Error during login:", err);
       setError("Login failed. Please check your username and password.");
       setLoading(false);
     }

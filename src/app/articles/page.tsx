@@ -3,6 +3,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import ArticlesPost from "../components/ArticlesPost";
 import { useRouter } from "next/navigation";
+import axiosInstance from "../axiosConfig";
 
 interface Article {
   id: number;
@@ -19,10 +20,16 @@ const Articles = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
+  const config = {
+    headers: {
+      Authorization: `Bearer ${localStorage.token}`,
+    },
+  };
+
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await axios.get("https://dummyjson.com/posts");
+        const response = await axiosInstance.get("/posts");
         setArticles(response.data.posts);
         setLoading(false);
       } catch (err) {
@@ -47,7 +54,7 @@ const Articles = () => {
   }
 
   return (
-    <div className="min-h-screen px-40 py-6">
+    <div className="min-h-screen px-40 py-20">
       {articles.map((article) => (
         <ArticlesPost article={article} />
       ))}

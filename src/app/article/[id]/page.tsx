@@ -1,6 +1,4 @@
-"use client";
-
-import axios from "axios";
+import axiosInstance from "@/app/axiosConfig";
 import { useEffect, useState } from "react";
 
 interface Article {
@@ -8,11 +6,21 @@ interface Article {
   title: string;
   body: string;
   userId: number;
-  tags: [string];
+  tags: string[];
   views: number;
+  reactions: {
+    likes: number;
+    dislikes: number;
+  };
 }
 
-const ArticlePage = ({ params: { id } }) => {
+interface ArticlePageProps {
+  params: {
+    id: string;
+  };
+}
+
+const ArticlePage = ({ params: { id } }: ArticlePageProps) => {
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -21,7 +29,7 @@ const ArticlePage = ({ params: { id } }) => {
     if (id) {
       const fetchArticle = async () => {
         try {
-          const response = await axios.get(`https://dummyjson.com/posts/${id}`);
+          const response = await axiosInstance.get<Article>(`/posts/${id}`);
           setArticle(response.data);
           setLoading(false);
         } catch (err) {
@@ -72,7 +80,7 @@ const ArticlePage = ({ params: { id } }) => {
           <p>{article.body}</p>
         </div>
         <div className="flex items-center mb-8 space-x-4">
-          {article.tags.map((tag: String) => (
+          {article?.tags?.map((tag: string) => (
             <span
               key={tag}
               className="bg-gray-200 text-gray-700 py-1 px-3 rounded-full text-sm"
@@ -83,9 +91,11 @@ const ArticlePage = ({ params: { id } }) => {
         </div>
         <div className="flex items-center mb-6 space-x-6">
           <div className="flex items-center space-x-2">
-            <span className="text-gray-600">👍 {article.reactions.likes}</span>
             <span className="text-gray-600">
-              👎 {article.reactions.dislikes}
+              👍 {article?.reactions?.likes}
+            </span>
+            <span className="text-gray-600">
+              👎 {article?.reactions?.dislikes}
             </span>
           </div>
         </div>

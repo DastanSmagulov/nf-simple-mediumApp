@@ -1,50 +1,44 @@
+// src/context/AuthContext.tsx
 "use client";
-
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 interface AuthContextType {
-  isAuthenticated: boolean;
-  login: (token: string) => void;
+  token: string | null;
+  setToken: (token: string) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}: any) => {
+  const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsAuthenticated(true);
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setToken(storedToken);
     } else {
-      setIsAuthenticated(false);
-      router.push("/login");
+      router.push("/");
     }
   }, [router]);
 
-  const login = (token: string) => {
+  const handleSetToken = (token: string) => {
+    setToken(token);
     localStorage.setItem("token", token);
-    setIsAuthenticated(true);
-    router.push("/");
   };
 
   const logout = () => {
+    setToken(null);
     localStorage.removeItem("token");
-    setIsAuthenticated(false);
-    router.push("/login");
+    router.push("/");
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ token, setToken: handleSetToken, logout }}>
       {children}
     </AuthContext.Provider>
   );

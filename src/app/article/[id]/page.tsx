@@ -1,3 +1,4 @@
+"use client";
 import axiosInstance from "@/app/axiosConfig";
 import { useEffect, useState } from "react";
 
@@ -44,7 +45,7 @@ const ArticlePage = ({ params: { id } }: ArticlePageProps) => {
 
   if (loading) {
     return (
-      <div className="min-h-screen px-40 py-6 flex justify-center items-center">
+      <div className="min-h-screen px-20 py-6 flex justify-center items-center">
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     );
@@ -60,7 +61,7 @@ const ArticlePage = ({ params: { id } }: ArticlePageProps) => {
 
   return (
     <div className="min-h-[90vh] flex justify-center items-center">
-      <div className="max-w-4xl max-lg:max-w-2xl max-md:max-w-xl max-sm:max-w-xs mx-auto p-6 bg-white rounded-lg shadow-md">
+      <div className="max-w-4xl max-lg:max-w-2xl max-md:max-w-xl max-sm:max-w-xs mx-auto my-6 p-6 bg-white rounded-lg shadow-md">
         <h1 className="text-5xl font-bold mb-6 text-gray-900">
           {article.title}
         </h1>

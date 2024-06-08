@@ -19,11 +19,14 @@ const Login = () => {
     setError(null);
 
     try {
-      const response = await axios.post("https://dummyjson.com/auth/login", {
-        username: username,
-        password: password,
-        expiresInMins: 30,
-      });
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/login`,
+        {
+          username: username,
+          password: password,
+          expiresInMins: 30,
+        }
+      );
 
       if (response.status === 200) {
         const token = response.data.token;
@@ -56,6 +59,7 @@ const Login = () => {
             <input
               type="text"
               id="username"
+              placeholder="emilys"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full p-3 border rounded bg-gray-50"
@@ -69,6 +73,7 @@ const Login = () => {
             <input
               type="password"
               id="password"
+              placeholder="emilyspass"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full p-3 border rounded bg-gray-50"

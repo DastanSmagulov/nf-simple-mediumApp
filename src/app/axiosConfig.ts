@@ -1,7 +1,8 @@
+"use client";
 import axios, { AxiosError } from "axios";
 
 const axiosInstance = axios.create({
-  baseURL: "https://dummyjson.com/auth",
+  baseURL: `${process.env.NEXT_PUBLIC_BACKEND_API}`,
 });
 
 axiosInstance.interceptors.request.use(

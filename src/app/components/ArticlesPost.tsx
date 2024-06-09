@@ -3,14 +3,27 @@ import Link from "next/link";
 import editIcon from "../../images/edit.svg";
 import deleteIcon from "../../images/delete.svg";
 
-const ArticlesPost = ({ article, onDelete, onEdit }: any) => {
+interface Article {
+  id: number;
+  title: string;
+  body: string;
+  userId: number;
+  tags: string[];
+  views: number;
+}
+
+interface ArticlesPostProps {
+  article: Article;
+  onDelete: (id: number) => void;
+  onEdit: (id: number) => void;
+}
+
+const ArticlesPost = ({ article, onDelete, onEdit }: ArticlesPostProps) => {
   const handleDelete = () => {
-    // Implement delete functionality here
     onDelete(article.id);
   };
 
   const handleEdit = () => {
-    // Implement edit functionality here
     onEdit(article.id);
   };
 

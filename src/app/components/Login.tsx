@@ -35,11 +35,13 @@ const Login = () => {
         setLoading(false);
         router.push("/articles");
       }
-    } catch (err: any) {
-      console.error("Error during login:", err);
-      setError("Login failed. Please check your username and password.");
-      setLoading(false);
-    }
+    } 
+    catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error("Error during login:", err);
+        setError("Login failed. Please check your username and password.");
+        setLoading(false);
+      }
   };
 
   return (

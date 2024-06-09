@@ -38,15 +38,14 @@ const Articles = () => {
     };
 
     fetchArticles();
-  }, []); // Empty dependency array to run only once
+  }, []);
 
   const handleDelete = async (id: number) => {
     try {
-      // Simulate DELETE request
       await axiosInstance.delete(`/posts/${id}`);
       const updatedArticles = articles.filter((article) => article.id !== id);
       setArticles(updatedArticles);
-    } catch (err: any) {
+    } catch (err: Error) {
       console.error("Error deleting article:", err);
       setError(err);
     }
@@ -66,7 +65,6 @@ const Articles = () => {
     if (!editedArticle) return;
 
     try {
-      // Simulate PUT request
       const response = await axiosInstance.put(`/posts/${editedArticle.id}`, {
         title: editedTitle,
         body: editedBody,
@@ -78,15 +76,16 @@ const Articles = () => {
       );
       setArticles(updatedArticles);
       setShowEditPopup(false);
-    } catch (err: any) {
-      console.error("Error editing article:", err);
-      setError(err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error("Error deleting article:", err);
+        setError(err);
+      }
     }
   };
 
   const handleAddSubmit = async () => {
     try {
-      // Simulate POST request
       const response = await axiosInstance.post("/posts/add", {
         title: newTitle,
         body: newBody,
@@ -102,10 +101,12 @@ const Articles = () => {
       setNewTitle("");
       setNewBody("");
       setNewTags("");
-    } catch (err: any) {
-      console.error("Error adding article:", err);
-      setError(err);
     }
+    catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error("Error adding article:", err);
+        setError(err);
+      }
   };
 
   if (loading) {

@@ -3,8 +3,6 @@ import { Inter } from "next/font/google";
 import "../../(index)/globals.css";
 import Header from "../../components/layout/Header";
 import Footer from "../../components/layout/Footer";
-import { AuthProvider } from "../../context/AuthContext";
-import { ThemeProvider, useTheme } from "../../context/ThemeContext";
 import React from "react";
 import { Providers } from "@/app/components/Providers";
 

@@ -3,7 +3,11 @@
 import Link from "next/link";
 import ThemeBtn from "../ThemeBtn";
 
-const Header = ({ loggedIn }: any) => {
+interface HeaderProps {
+  loggedIn: boolean;
+}
+
+const Header: React.FC<HeaderProps> = ({ loggedIn }) => {
   return (
     <div className="flex justify-center gap-10 max-sm:gap-4 items-center pt-6">
       <Link href={`/articles`}>

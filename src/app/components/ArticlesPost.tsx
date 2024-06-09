@@ -29,7 +29,7 @@ const ArticlesPost = ({ article, onDelete, onEdit }: any) => {
             {article.title}
           </p>
           <p className="mt-6 mb-16 text-base" id="summary">
-            {article.body}
+            {article.body.slice(0, 200)}...
           </p>
         </div>
         <div className="flex justify-between items-center">

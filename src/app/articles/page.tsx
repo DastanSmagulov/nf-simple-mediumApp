@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import ArticlesPost from "../components/ArticlesPost";
 import axiosInstance from "../axiosConfig";
 
@@ -45,9 +45,10 @@ const Articles = () => {
       await axiosInstance.delete(`/posts/${id}`);
       const updatedArticles = articles.filter((article) => article.id !== id);
       setArticles(updatedArticles);
-    } catch (err: Error) {
-      console.error("Error deleting article:", err);
-      setError(err);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        console.error("Error deleting article:", err);
+      }
     }
   };
 
@@ -78,7 +79,7 @@ const Articles = () => {
       setShowEditPopup(false);
     } catch (err: unknown) {
       if (err instanceof Error) {
-        console.error("Error deleting article:", err);
+        console.error("Error Editing article:", err);
         setError(err);
       }
     }
@@ -101,12 +102,12 @@ const Articles = () => {
       setNewTitle("");
       setNewBody("");
       setNewTags("");
-    }
-    catch (err: unknown) {
+    } catch (err: unknown) {
       if (err instanceof Error) {
         console.error("Error adding article:", err);
         setError(err);
       }
+    }
   };
 
   if (loading) {

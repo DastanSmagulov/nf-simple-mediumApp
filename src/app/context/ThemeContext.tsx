@@ -1,36 +1,65 @@
-"use client";
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  ReactNode,
+} from "react";
 
-interface ThemeContextType {
+interface ThemeContextProps {
   themeMode: string;
   toggleTheme: () => void;
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ThemeContext = createContext<ThemeContextProps | undefined>(undefined);
 
-export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
+interface ThemeProviderProps {
+  value: ThemeContextProps;
+  children: ReactNode;
+}
+
+export const ThemeProvider: React.FC<ThemeProviderProps> = ({
+  value,
   children,
 }) => {
-  const [themeMode, setThemeMode] = useState<string>(() => {
+  const { themeMode, toggleTheme } = value;
+
+  const [currentThemeMode, setCurrentThemeMode] = useState<string>(() => {
     if (typeof window !== "undefined") {
-      return localStorage.getItem("theme") || "light";
+      const storedTheme = localStorage.getItem("theme");
+      return storedTheme || "light"; // Set the default theme to "light"
     }
     return "light";
   });
 
-  const toggleTheme = () => {
-    const newTheme = themeMode === "light" ? "dark" : "light";
-    setThemeMode(newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
-    localStorage.setItem("theme", newTheme);
+  useEffect(() => {
+    document.documentElement.classList.toggle(
+      "dark",
+      currentThemeMode === "dark"
+    );
+    document.documentElement.classList.toggle(
+      "light",
+      currentThemeMode === "light"
+    );
+  }, [currentThemeMode]);
+
+  const handleToggleTheme = () => {
+    const newThemeMode = currentThemeMode === "light" ? "dark" : "light";
+    setCurrentThemeMode(newThemeMode);
+    localStorage.setItem("theme", newThemeMode);
   };
 
   useEffect(() => {
-    document.documentElement.classList.toggle("dark", themeMode === "dark");
-  }, [themeMode]);
+    handleToggleTheme();
+  }, []); // Run only once on mount to ensure correct initial theme
+
+  const contextValue: ThemeContextProps = {
+    themeMode: currentThemeMode,
+    toggleTheme: handleToggleTheme,
+  };
 
   return (
-    <ThemeContext.Provider value={{ themeMode, toggleTheme }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
   );

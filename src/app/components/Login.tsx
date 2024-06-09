@@ -1,4 +1,3 @@
-// src/components/Login.tsx
 "use client";
 import { useState } from "react";
 import axios from "axios";
@@ -35,13 +34,13 @@ const Login = () => {
         setLoading(false);
         router.push("/articles");
       }
-    } 
-    catch (err: unknown) {
+    } catch (err: unknown) {
       if (err instanceof Error) {
         console.error("Error during login:", err);
         setError("Login failed. Please check your username and password.");
         setLoading(false);
       }
+    }
   };
 
   return (

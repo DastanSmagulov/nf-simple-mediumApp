@@ -49,10 +49,6 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({
     localStorage.setItem("theme", newThemeMode);
   };
 
-  useEffect(() => {
-    handleToggleTheme();
-  }, []); // Run only once on mount to ensure correct initial theme
-
   const contextValue: ThemeContextProps = {
     themeMode: currentThemeMode,
     toggleTheme: handleToggleTheme,

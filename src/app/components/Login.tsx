@@ -18,14 +18,11 @@ const Login = () => {
     setError(null);
 
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/login`,
-        {
-          username: username,
-          password: password,
-          expiresInMins: 30,
-        }
-      );
+      const response = await axios.post(`https://dummyjson.com/auth/login`, {
+        username: username,
+        password: password,
+        expiresInMins: 30,
+      });
 
       if (response.status === 200) {
         const token = response.data.token;
